@@ -35,14 +35,15 @@ users_schema = UserSchema(many=True)
 def add_user():
     username = request.json['username']
     email = request.json['email']
-    
+
     new_user = User(username, email)
 
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify(new_user)
+    user = User.query.get(new_user.id)
 
+    return user_schema.jsonify(user)
 
 # endpoint to show all users
 @app.route("/user", methods=["GET"])
